@@ -9,8 +9,8 @@ muf = 1.78 * np.power(10.0, -5)
 taup0 = C_Re.taup0(rop, dp, muf)
 print('taup0 = ', taup0)
 # Время динамической релаксации частицы с учетом поправки
-u = 0
-v = 10.4107
+u = 1.34
+v = 2.92
 rof = 1.24
 Rep = C_Re.Rep(u, v, dp, muf, rof)
 print('Rep = ', Rep)
@@ -24,7 +24,9 @@ print('w = ', w)
 # Определение числа стокса (размер паяльника - характерный размер)
 rbody = 0.017 / 2.0
 Stk = C_Re.Stk(taup, u, rbody)
+Stk0 = C_Re.Stk(taup0, u, rbody)
 print('Stk = ', Stk)
+print('Stk0 = ', Stk0)
 # Массовая концентрация
 a = b = 0.1
 Gp = 0.001
