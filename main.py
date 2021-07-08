@@ -34,7 +34,7 @@ class Flow:
                                                  9.81)
 
     def caaasmp(self):
-        k = 50001
+        k = 30001
         i = 1
         dt = 0.00005
         self.v = np.zeros(k)
@@ -61,9 +61,12 @@ class Flow:
             self.time[i] = self.time[i - 1] + dt
             i += 1
 
+    def velocity_lenght(self):
+        self.l_element = np.argmin(np.abs(self.x - self.l))
+
 
 if __name__ == '__main__':
-    u = np.linspace(1,10,10)
+    u = np.linspace(1,5,15)
     air = Gas(287.0, 101325.0, 288.15)
     partlist = [Particles(130.0 * np.power(10.0, -6)),
                 Particles(160.0 * np.power(10.0, -6)),
@@ -79,4 +82,15 @@ if __name__ == '__main__':
         for j in flows[i]:
             print('u = ', flows[i][j].u)
             flows[i][j].caaasmp()
-    np.argmin(np.abs(flows[0.00013][1.0].x)-1.5)
+            flows[i][j].velocity_lenght()
+
+    for i in flows:
+        v = []
+        u = []
+        for j in flows[i]:
+            indx = flows[i][j].l_element
+            v.append(flows[i][j].v[indx]-flows[i][j].u)
+            u.append(flows[i][j].u)
+        plt.plot(u,v)
+    plt.grid(True)
+    plt.show()
