@@ -105,11 +105,11 @@ if __name__ == '__main__':
     u = np.linspace(1,5,5)
     #u = np.ones(1)*15
     air = Gas(287.0, 101325.0, 288.15)
-    partlist = [Particles(5.95 * np.power(10.0, -3), 1088.0)]
+    partlist = [Particles(5.95*10e-3, 1088.0)]
     flows = {}
     for i in partlist:
         f = {}
-        print('dp = ', flows[i][1].particles.dp * 1000000)
+
         for j in u:
             f[j] = Flow(1.75, j, air, i)
         flows[i.dp] = f

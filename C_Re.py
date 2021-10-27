@@ -42,7 +42,7 @@ def w_settling_corrected(rop, dp, muf, rof, u, a=9.81):
     # Время динамической релаксации частицы с учетом поправки
     w = 1000.0
     w0 = 2.0 * w
-    while np.abs(w-w0)/w > np.power(10.0, -6):  # повторять цикл пока разница между скоростью витания и факт выше 0.5%
+    while np.abs(w-w0)/w > 10e-6:  # повторять цикл пока разница между скоростью витания и факт выше 0.5%
         w0 = w
         Rep = reynolds_particle(u, u + w, dp, muf, rof)
         taup = tau_particle(taup0, Rep)
@@ -53,8 +53,8 @@ def w_settling_corrected(rop, dp, muf, rof, u, a=9.81):
 
 
 if __name__ == "__main__":
-    rop = 2550.0
-    dp = 160.0 * np.power(10.0, -6)
+    rop = 1088.0
+    dp = 5.95/10e3
     #muf = 1.79 * np.power(10.0, -5)
     T = 288.15
     muf = airprops.mu_air(T)
