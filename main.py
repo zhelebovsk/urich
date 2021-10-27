@@ -6,14 +6,14 @@ import RK
 
 
 class Particles:
-    def __init__(self, dp=160.0, rop=2550.0):
+    def __init__(self, dp, rop):
         self.dp = dp
         self.name = int(dp*1000000)
         self.rop = rop
 
 
 class Gas:
-    def __init__(self, R=287.0, P=101325.0, T=288.15):
+    def __init__(self, R, P, T):
         self.R = R
         self.P = P
         self.T = T
@@ -22,7 +22,7 @@ class Gas:
 
 
 class Flow:
-    def __init__(self, l, u, gas=Gas(), particle=Particles()):
+    def __init__(self, l, u, gas, particle):
         self.u = u
         self.gas = gas
         self.particles = particle
@@ -102,21 +102,19 @@ class Flow:
 
 
 if __name__ == '__main__':
-    u = np.linspace(0.1,5,15)
+    u = np.linspace(1,5,5)
     #u = np.ones(1)*15
     air = Gas(287.0, 101325.0, 288.15)
-    #partlist = [Particles(130.0 * np.power(10.0, -6)),
-    #            Particles(160.0 * np.power(10.0, -6)),
-    #            Particles(190.0 * np.power(10.0, -6))]
-    partlist = [Particles(160.0 * np.power(10.0, -6))]
+    partlist = [Particles(5.95 * np.power(10.0, -3), 1088.0)]
     flows = {}
     for i in partlist:
         f = {}
+        print('dp = ', flows[i][1].particles.dp * 1000000)
         for j in u:
             f[j] = Flow(1.75, j, air, i)
         flows[i.dp] = f
     for i in flows:
-        #print('dp = ', flows[i][1].particles.dp*1000000)
+
         for j in flows[i]:
             print('u = ', flows[i][j].u)
             flows[i][j].caaasmp()
