@@ -54,12 +54,12 @@ def w_settling_corrected(rop, dp, muf, rof, u, a=9.81):
 
 if __name__ == "__main__":
     rop = 2550.0
-    dp = 150.0 * np.power(10.0, -6)
+    dp = 160.0 * np.power(10.0, -6)
     #muf = 1.79 * np.power(10.0, -5)
     T = 288.15
     muf = airprops.mu_air(T)
     #print(muf)
-    u = 2.0
+    u = 2.5
     rof = 1.22
     #rof = airprops.density_air(r_gas=287.0, p=101325, t=T)
 
