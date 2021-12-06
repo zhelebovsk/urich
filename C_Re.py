@@ -40,8 +40,9 @@ def stokes(taup, u, r):
 def w_settling_corrected(rop, dp, muf, rof, u, a=9.81):
     taup0 = tau_particle_0(rop, dp, muf)
     # Время динамической релаксации частицы с учетом поправки
-    w = 1000.0
+    w = 9.0
     w0 = 2.0 * w
+    i = 0
     while np.abs(w-w0)/w > 10e-6:  # повторять цикл пока разница между скоростью витания и факт выше 0.5%
         w0 = w
         Rep = reynolds_particle(u, u + w, dp, muf, rof)
@@ -49,6 +50,9 @@ def w_settling_corrected(rop, dp, muf, rof, u, a=9.81):
         # Скорость витания (гравитационного) и коэффициенты сопротивления
         cd = c_drag(Rep)
         w = w_settling(taup, a)
+        i += 1
+        if (i > 10000) and (Rep > 1000):
+            break
     return w#, cd, taup, Rep,
 
 

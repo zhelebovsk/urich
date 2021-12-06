@@ -11,6 +11,9 @@ class Particles:
         self.name = int(dp*1000000)
         self.rop = rop
 
+    def __repr__(self):
+        return "[dp = " + str(self.name) + ", rop = " + str(self.rop) + "]"
+
 
 class Gas:
     def __init__(self, R, P, T):
@@ -19,6 +22,9 @@ class Gas:
         self.T = T
         self.muf = airprops.mu_air(self.T)
         self.rof = airprops.density_air(self.R, self.P, self.T)
+
+    def __repr__(self):
+        return "[R = " + str(self.R) + ", P = " + str(self.P) + " , T = " + str(self.T) + "]"
 
 
 class Flow:
@@ -34,12 +40,14 @@ class Flow:
                                                  self.u,
                                                  9.81)
 
+    def __repr__(self):
+        return "u = " + str(self.u) + ", particles: " + repr(self.particles)
+
     def caaasmp(self):
-        k = 30001
+        k = 80001
         i = 1
         dt = 0.00005
         self.v = np.zeros(k)
-        #self.v = -np.ones(k)*31
         self.Re_p = np.zeros(k - 1)
         self.cd = np.zeros(k - 1)
         self.time = np.zeros(k)
@@ -62,9 +70,7 @@ class Flow:
             self.x[i] = self.x[i - 1] + (self.v[i] + self.v[i - 1]) / 2.0 * dt
             self.time[i] = self.time[i - 1] + dt
             i += 1
-
-
-    def caaasmp_height(self):
+    """def caaasmp_height(self):
         k = 10001
         i = 1
         dt = 0.00005
@@ -98,29 +104,47 @@ class Flow:
 
 
     def velocity_lenght(self):
-        self.l_element = np.argmin(np.abs(self.x - self.l))
+        self.l_element = np.argmin(np.abs(self.x - self.l))"""
 
 
 if __name__ == '__main__':
-    u = np.linspace(1,5,5)
-    #u = np.ones(1)*15
-    air = Gas(287.0, 101325.0, 288.15)
-    partlist = [Particles(5.95*10e-3, 1088.0)]
-    flows = {}
-    for i in partlist:
-        f = {}
+    air = Gas(287.0, 101325.0, 293.15)
 
+    u = np.linspace(-20,0.0001,5)
+    partlist = [Particles(160*1e-6, 2550.0), Particles(8000*1e-6, 1000.0)]
+
+    flows = []
+
+    for velocity in u:
+        for p in partlist:
+            #flows[velocity, p] = Flow(3.0, velocity, air, p)
+            flows.append(Flow(3.0, velocity, air, p))
+
+    for flow in flows:
+        flow.caaasmp()
+
+    for flow in flows:
+        if flow.particles.name == 160:
+            plt.plot(flow.x, flow.v, linestyle="--")
+        else:
+            plt.plot(flow.x, flow.v)
+    plt.grid()
+    plt.show()
+    #for flow in flows:
+    #    print(flow, ":")
+    #    flow.caaasmp()
+    #    print("-------------------------")
+    """for i in partlist:
+        f = {}
         for j in u:
-            f[j] = Flow(1.75, j, air, i)
+            f[j] = Flow(3.0, j, air, i)
         flows[i.dp] = f
     for i in flows:
-
         for j in flows[i]:
             print('u = ', flows[i][j].u)
             flows[i][j].caaasmp()
             flows[i][j].velocity_lenght()
             flows[i][j].caaasmp_height()
-
     for i in flows:
         v = []
         u = []
@@ -136,4 +160,4 @@ if __name__ == '__main__':
     plt.grid(True)
     plt.show()
     plt.plot(u, h)
-    plt.show()
+    plt.show()"""
